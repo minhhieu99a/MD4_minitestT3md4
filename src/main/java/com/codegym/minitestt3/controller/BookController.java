@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/books")
 public class BookController {
@@ -26,6 +27,10 @@ public class BookController {
     public Iterable<Category> listAllCategory() {
         return categoryService.findAll();
     }
+    @GetMapping("/cate")
+    public ResponseEntity<Iterable<Category>> showCate(){
+        return new ResponseEntity<>(categoryService.findAll(),HttpStatus.OK);
+    }
     @GetMapping("/list")
     public ModelAndView showBooks(){
         ModelAndView modelAndView = new ModelAndView("/list");
@@ -34,8 +39,8 @@ public class BookController {
     }
     @GetMapping
     public ResponseEntity<Iterable<Book>> listBooks(){
-        List<Book> bookList = (List<Book>) bookService.findAll();
-        return new ResponseEntity<>(bookList, HttpStatus.OK);
+//        List<Book> bookList = (List<Book>) bookService.findAll();
+        return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Book>createBook(@RequestBody Book book){
@@ -53,8 +58,10 @@ public class BookController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<Book> findBook (@PathVariable Long id){
-        bookService.findById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+        Optional<Book> bookOptional = bookService.findById(id);
+
+        return new ResponseEntity<>(bookOptional.get(),HttpStatus.OK);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id , @RequestBody Book book){

@@ -1,24 +1,26 @@
 package com.codegym.minitestt3.model;
 
-import javax.persistence.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@Entity
-@Table(name = "books")
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BookForm {
     private Long id;
     private String name;
     private int price;
     private String author;
-
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
     private Category category;
-    private String image;
+    private MultipartFile image;
 
-    public Book(Long id, String name, int price, String author, Category category, String image) {
+    public BookForm() {
+    }
+
+    public BookForm(String name, int price, String author, MultipartFile image) {
+        this.name = name;
+        this.price = price;
+        this.author = author;
+        this.image = image;
+    }
+
+    public BookForm(Long id, String name, int price, String author, Category category, MultipartFile image) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -27,22 +29,16 @@ public class Book {
         this.image = image;
     }
 
-    public Book() {
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public Book(String name, int price, String author, Category category, String image) {
+    public BookForm(String name, int price, String author, Category category, MultipartFile image) {
         this.name = name;
         this.price = price;
         this.author = author;
         this.category = category;
         this.image = image;
-    }
-
-    public Book(String name, int price, String author, Category category) {
-        this.name = name;
-        this.price = price;
-        this.author = author;
-        this.category = category;
     }
 
     public Long getId() {
@@ -61,13 +57,7 @@ public class Book {
         this.name = name;
     }
 
-    public int getPrice() {
-        return price;
-    }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
 
     public String getAuthor() {
         return author;
@@ -81,15 +71,19 @@ public class Book {
         return category;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public void setCategory(Category category) {
         this.category = category;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 }
